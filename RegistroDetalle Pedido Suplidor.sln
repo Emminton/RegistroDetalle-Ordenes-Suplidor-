@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistroDetalle Pedido Suplidor", "RegistroDetalle Pedido Suplidor\RegistroDetalle Pedido Suplidor.csproj", "{3615D949-7283-4C1A-8E9A-84DF00CB6401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistroDetalle Pedido SuplidorTests", "RegistroDetalle Pedido SuplidorTests\RegistroDetalle Pedido SuplidorTests.csproj", "{B6B4EA57-9934-463A-94DA-EB33FEB17231}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3615D949-7283-4C1A-8E9A-84DF00CB6401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3615D949-7283-4C1A-8E9A-84DF00CB6401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3615D949-7283-4C1A-8E9A-84DF00CB6401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3615D949-7283-4C1A-8E9A-84DF00CB6401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6B4EA57-9934-463A-94DA-EB33FEB17231}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6B4EA57-9934-463A-94DA-EB33FEB17231}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6B4EA57-9934-463A-94DA-EB33FEB17231}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6B4EA57-9934-463A-94DA-EB33FEB17231}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02B0CD41-D74A-4D51-B275-3B835593CCF0}
+	EndGlobalSection
+EndGlobal

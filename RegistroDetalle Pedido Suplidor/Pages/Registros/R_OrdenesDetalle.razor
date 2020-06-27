@@ -1,0 +1,294 @@
+﻿@page "/Orden"
+@page "/Orden/{OrdenId:int}"
+
+@using RegistroDetalle_Pedido_Suplidor.BLL
+@using RegistroDetalle_Pedido_Suplidor.Models
+
+@inject IToastService toast
+
+<EditForm Model="ordene" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <section class="form-register">
+        <div class="card">
+
+            <div class="card-header">
+                <h3>Registro de Ordenes</h3>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>ID:</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="ordene.OrdenId" class="form-control col-4" />
+                                    <ValidationMessage For="(() => ordene.OrdenId)"></ValidationMessage>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-info input-group-text oi oi-magnifying-glass" @onclick="Buscar"> Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Fecha*@
+                    <div class="form-group">
+                        <label>Fecha:</label>
+                        <InputDate @bind-Value="ordene.Fecha" class="form-control" />
+                        <ValidationMessage For="@(() => ordene.Fecha)" />
+                    </div>
+
+                    @*Suplidor*@
+                    <div class="form-group">
+                        <label>Suplidor:</label>
+                        <select class="form-control" @bind="ordene.SuplidorId">
+                            @foreach (var item in listaSuplidores)
+                            {
+                                <option value="@item.SuplidorId">@item.Nombre</option>
+                            }
+                        </select>
+                        <ValidationMessage For="@(() => ordene.SuplidorId)" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            @*Producto*@
+                            <div class="col">
+                                <label>Producto:</label>
+                                <select class="form-control" @bind="SeleccionProducto" @onclick="EncontrarCosto">
+                                    @foreach (var item in listaProductos)
+                                    {
+                                        <option value="@item.ProductoId">@item.Descripcion</option>
+                                    }
+                                </select>
+                            </div>
+                            @*Costo*@
+                            <div class="col">
+                                <label>Costo:</label>
+                                <InputNumber class="form-control" @bind-Value="costoEncontrado" readonly="true" />
+                            </div>
+                            @*Cantidad*@
+                            <div class="col">
+                                <label>Cantidad:</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="CantidadAgregada" class="form-control" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" @onclick="Agregar">Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    @*Detalle*@
+                    <div class="table-responsive text-nowrap">
+                        <table class="table table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Orden Id</th>
+                                    <th>Producto Id</th>
+                                    <th>Cantidad</th>
+                                    <th>Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                @foreach (var item in ordene.OrdenDetalles)
+                                {
+                                    <tr>
+                                        <td>@item.OrdenDetalleId</td>
+                                        <td>@item.OrdenId</td>
+                                        <td>@item.ProductoId</td>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Costo</td>
+                                        <td><button type="button" class="btn btn-lg btn-danger oi oi-minus" @onclick="(() => EliminarOrdenDetalle(item))">Remover</button></td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    @*Total*@
+                    <div class="form-group">
+                        <label>Monto:</label>
+                        <InputNumber @bind-Value="ordene.Monto" class="form-control" readonly="true" />
+                        <ValidationMessage For="@(() => ordene.Monto)" />
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary oi oi-check" @onclick="Nuevo"> Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int OrdenId { get; set; }
+
+    public int CantidadAgregada { get; set; }
+    public int SeleccionProducto { get; set; }
+    public decimal costoEncontrado { get; set; }
+
+    Ordene ordene = new Ordene();
+    List<Suplidore> listaSuplidores = new List<Suplidore>();
+    List<Producto> listaProductos = new List<Producto>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (OrdenId > 0)
+        {
+            var auxOrden = OrdenBLL.Buscar(OrdenId);
+            if (auxOrden != null)
+                this.ordene = auxOrden;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+
+        listaSuplidores = SuplidorBLL.GetList(p => true);
+        listaProductos = ProductoBLL.GetList(p => true);
+    }
+
+    private void Buscar()
+    {
+        var encontrado = OrdenBLL.Buscar(ordene.OrdenId);
+        if (encontrado != null)
+        {
+            this.ordene = encontrado;
+        }
+        else
+            toast.ShowWarning("No encontrado");
+
+    }
+
+
+    private void Nuevo()
+    {
+        this.ordene = new Ordene();
+        CantidadAgregada = 0;
+        SeleccionProducto = 0;
+        costoEncontrado = 0;
+
+    }
+
+    private void EncontrarCosto()
+    {
+        var auxProducto = ProductoBLL.Buscar(SeleccionProducto);
+        if (auxProducto != null)
+        {
+            costoEncontrado = auxProducto.Costo;
+        }
+
+    }
+
+    private void Agregar()
+    {
+        if (SeleccionProducto == 0)
+        {
+            toast.ShowWarning("Tiene que seleccionar un producto.");
+            return;
+        }
+
+        if (CantidadAgregada <= 0)
+        {
+            toast.ShowWarning("La cantidad debe ser mayor a 0.");
+            return;
+        }
+        else
+        {
+            this.ordene.OrdenDetalles.Add(new OrdenesDetalle
+            {
+                OrdenDetalleId = 0,
+                OrdenId = ordene.OrdenId,
+                ProductoId = SeleccionProducto,
+                Costo = costoEncontrado,
+                Cantidad = CantidadAgregada
+            });
+
+            SeleccionProducto = 0;
+            costoEncontrado = 0;
+            CantidadAgregada = 0;
+
+        }
+        CalcularMonto();
+
+    }
+
+    private void CalcularMonto()
+    {
+        decimal total = 0;
+        foreach (var item in ordene.OrdenDetalles)
+        {
+            total += (item.Costo * item.Cantidad);
+        }
+        ordene.Monto = total;
+    }
+
+    private void Guardar()
+    {
+        bool paso;
+        if (ordene.OrdenDetalles.Count == 0)
+        {
+            toast.ShowWarning("Lista Vacía!","Agregue un Articulo..");
+            return;
+        }
+        else
+        {
+            paso = OrdenBLL.Guardar(ordene);
+
+            if (paso)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar");
+            }
+        }
+
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = OrdenBLL.Eliminar(ordene.OrdenId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+    private void EliminarOrdenDetalle(OrdenesDetalle detalle)
+    {
+        try
+        {
+            ordene.OrdenDetalles.Remove(detalle);
+            CalcularMonto();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+}
