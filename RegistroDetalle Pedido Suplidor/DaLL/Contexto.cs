@@ -32,7 +32,7 @@ namespace RegistroDetalle_Pedido_Suplidor.DaLL
             modelBuilder.Entity<Suplidore>().HasData(new Suplidore
             {
                 SuplidorId = 1,
-                Nombre = "La Famosa"
+                Nombre = "Grupo Ramos"
             });
 
             modelBuilder.Entity<Producto>().HasData(new Producto
@@ -46,7 +46,7 @@ namespace RegistroDetalle_Pedido_Suplidor.DaLL
             modelBuilder.Entity<Suplidore>().HasData(new Suplidore
             {
                 SuplidorId = 2,
-                Nombre = "La Galza"
+                Nombre = "El Yoma"
             });
 
         }

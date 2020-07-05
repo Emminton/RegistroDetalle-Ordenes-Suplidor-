@@ -87,22 +87,22 @@
                         <table class="table table-striped">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Orden Id</th>
                                     <th>Producto Id</th>
+                                    <th>Descripcion</th>
                                     <th>Cantidad</th>
                                     <th>Costo</th>
+                                    <th>Importe</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
                                 @foreach (var item in ordene.OrdenDetalles)
                                 {
                                     <tr>
-                                        <td>@item.OrdenDetalleId</td>
-                                        <td>@item.OrdenId</td>
-                                        <td>@item.ProductoId</td>
+                                        <td>@item.ProductoId</td> 
+                                        <td>@item.Descripcion</td>
                                         <td>@item.Cantidad</td>
                                         <td>@item.Costo</td>
+                                        <td>@item.Importe</td>
                                         <td><button type="button" class="btn btn-lg btn-danger oi oi-minus" @onclick="(() => EliminarOrdenDetalle(item))">Remover</button></td>
                                     </tr>
                                 }
@@ -144,6 +144,7 @@
     public int SeleccionProducto { get; set; }
     public decimal costoEncontrado { get; set; }
 
+  
     Ordene ordene = new Ordene();
     List<Suplidore> listaSuplidores = new List<Suplidore>();
     List<Producto> listaProductos = new List<Producto>();
@@ -175,7 +176,6 @@
             toast.ShowWarning("No encontrado");
 
     }
-
 
     private void Nuevo()
     {
@@ -216,16 +216,19 @@
                 OrdenDetalleId = 0,
                 OrdenId = ordene.OrdenId,
                 ProductoId = SeleccionProducto,
+                Descripcion = ProductoBLL.Buscar(SeleccionProducto).Descripcion,
                 Costo = costoEncontrado,
-                Cantidad = CantidadAgregada
-            });
+                Cantidad = CantidadAgregada,
+                Importe = Convert.ToDecimal(costoEncontrado * CantidadAgregada)
+
+            }) ;
 
             SeleccionProducto = 0;
             costoEncontrado = 0;
             CantidadAgregada = 0;
-
+         
         }
-        CalcularMonto();
+        CalcularMonto();       
 
     }
 

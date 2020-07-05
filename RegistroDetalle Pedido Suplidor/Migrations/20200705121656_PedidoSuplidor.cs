@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RegistroDetalle_Pedido_Suplidor.Migrations
 {
-    public partial class DetalleSuplidores : Migration
+    public partial class PedidoSuplidor : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,8 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     OrdenId = table.Column<int>(nullable: false),
                     ProductoId = table.Column<int>(nullable: false),
+                    Descripcion = table.Column<string>(nullable: true),
+                    Importe = table.Column<decimal>(nullable: false),
                     Cantidad = table.Column<int>(nullable: false),
                     Costo = table.Column<decimal>(nullable: false)
                 },
@@ -85,12 +87,12 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
             migrationBuilder.InsertData(
                 table: "Suplidores",
                 columns: new[] { "SuplidorId", "Nombre" },
-                values: new object[] { 1, "La Famosa" });
+                values: new object[] { 1, "Grupo Ramos" });
 
             migrationBuilder.InsertData(
                 table: "Suplidores",
                 columns: new[] { "SuplidorId", "Nombre" },
-                values: new object[] { 2, "La Galza" });
+                values: new object[] { 2, "El Yoma" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrdenesDetalle_OrdenId",

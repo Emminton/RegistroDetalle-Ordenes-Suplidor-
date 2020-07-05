@@ -48,6 +48,12 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
                     b.Property<decimal>("Costo")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Importe")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("OrdenId")
                         .HasColumnType("INTEGER");
 
@@ -118,12 +124,12 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
                         new
                         {
                             SuplidorId = 1,
-                            Nombre = "La Famosa"
+                            Nombre = "Grupo Ramos"
                         },
                         new
                         {
                             SuplidorId = 2,
-                            Nombre = "La Galza"
+                            Nombre = "El Yoma"
                         });
                 });
 

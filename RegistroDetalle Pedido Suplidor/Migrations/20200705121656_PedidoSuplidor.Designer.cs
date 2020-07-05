@@ -9,8 +9,8 @@ using RegistroDetalle_Pedido_Suplidor.DaLL;
 namespace RegistroDetalle_Pedido_Suplidor.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200627181001_DetalleSuplidores")]
-    partial class DetalleSuplidores
+    [Migration("20200705121656_PedidoSuplidor")]
+    partial class PedidoSuplidor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,12 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Costo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Importe")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("OrdenId")
@@ -120,12 +126,12 @@ namespace RegistroDetalle_Pedido_Suplidor.Migrations
                         new
                         {
                             SuplidorId = 1,
-                            Nombre = "La Famosa"
+                            Nombre = "Grupo Ramos"
                         },
                         new
                         {
                             SuplidorId = 2,
-                            Nombre = "La Galza"
+                            Nombre = "El Yoma"
                         });
                 });
 
